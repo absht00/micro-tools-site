@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Base64 Encoder and Decoder - Free Online Tool, No Signup</title>
+<meta name="description" content="Encode or decode Base64 text instantly, offline.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Base64 Encoder and Decoder",
+"applicationCategory":"UtilityApplication","operatingSystem":"Any",
+"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script><style>:root{--bg:#0b1020;--card:#151b30;--fg:#e8ecf8;--mut:#93a0c0;--acc:#5b8cff}*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,sans-serif;background:var(--bg);color:var(--fg)}main{max-width:760px;margin:0 auto;padding:32px 20px}h1{font-size:clamp(24px,5vw,38px);margin:0 0 8px}.sub{color:var(--mut);margin:0 0 28px}.card{background:var(--card);border-radius:14px;padding:22px;margin:18px 0}textarea{width:100%;padding:12px;border-radius:9px;border:1px solid #2a3350;background:#0e1428;color:var(--fg);font:inherit;font-family:ui-monospace,monospace}button{padding:11px 18px;border:0;border-radius:9px;background:var(--acc);color:#fff;font-weight:600;cursor:pointer;margin:8px 8px 0 0}button.ghost{background:transparent;border:1px solid #2a3350;color:var(--fg)}.row{display:flex;gap:10px;flex-wrap:wrap}footer{color:var(--mut);font-size:13px;margin-top:36px;border-top:1px solid #202940;padding-top:18px}a{color:var(--acc)}</style></head><body><main>
+<h1>Base64 Encoder and Decoder</h1><p class="sub">Encode or decode Base64 text instantly, offline.</p>
+<div class="card"><textarea id="in" rows="7">Hello world</textarea>
+<div class="row"><button onclick="go()">Run</button>
+<button class="ghost" onclick="ex()">Load example</button>
+<button class="ghost" onclick="cp()">Copy result</button></div>
+<pre id="out" class="card" style="margin-bottom:0;white-space:pre-wrap"></pre></div>
+<div class="card"><h2 style="margin-top:0;font-size:19px">Why use this</h2>
+<p>Doing this in a browser keeps secrets off third-party servers.</p><p>Works both ways. Handy for API tokens, data URIs and debugging.</p></div>
+<footer>Free tool, no signup, no tracking. Runs entirely in your browser.<br>
+<a href="../index.html">Back to all tools</a></footer>
+</main><script>
+function go(){const v=document.getElementById('in').value.trim();let r;try{r=/^[A-Za-z0-9+/=]+$/.test(v)&&v.length%4===0?decodeURIComponent(escape(atob(v))):btoa(unescape(encodeURIComponent(v)));}catch(e){r=btoa(unescape(encodeURIComponent(v)));}document.getElementById('out').textContent=r;}
+function ex(){document.getElementById('in').value='Hello world';go();}
+function cp(){navigator.clipboard.writeText(document.getElementById('out').textContent);}
+document.addEventListener('DOMContentLoaded',go);
+</script></body></html>
