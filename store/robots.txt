@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://absht00.github.io/micro-tools-site/store/sitemap.xml
