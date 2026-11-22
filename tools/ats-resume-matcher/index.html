@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free ATS Resume Keyword Matcher & Checker No Login</title>
+  <meta name="description" content="Check your resume against any job description instantly in your browser. 100% private, no signup, free ATS keyword match calculator & optimizer.">
+  <link rel="canonical" href="https://absht00.github.io/micro-tools-site/tools/ats-resume-matcher/">
+  <meta property="og:title" content="Free ATS Resume Keyword Matcher & Checker No Login">
+  <meta property="og:description" content="Instantly analyze resume keyword match score against any job description. 100% client-side, zero signup, secure and private.">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ATS Resume Keyword Matcher",
+    "url": "https://absht00.github.io/micro-tools-site/tools/ats-resume-matcher/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All",
+    "browser": "Requires JavaScript. Runs 100% client-side in browser.",
+    "description": "Free online tool to match resume text against job descriptions, calculate ATS compatibility score, find missing keywords, and suggest action verbs.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does this ATS resume keyword matcher work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It extracts key terms, skills, and technical phrases from the job description and checks if they appear in your resume text, calculating an instant compatibility percentage and highlighting missing keywords."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my resume data uploaded to any server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All text processing happens 100% locally inside your web browser using client-side JavaScript. Your private resume data never leaves your device."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to create an account or log in?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No login, no registration, and no email required. Use the tool instantly for free as many times as you like."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can I improve my ATS score?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Incorporate the exact missing keywords and hard skills identified by the analyzer into your bullet points naturally, and use strong action verbs like 'engineered', 'optimized', and 'spearheaded'."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #151b30;
+      --card-hover: #1c2442;
+      --fg: #e8ecf8;
+      --mut: #93a0c0;
+      --acc: #5b8cff;
+      --acc-hover: #4578e6;
+      --succ: #22c55e;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --border: #2a3350;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 16px/1.6 system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      padding: 0 16px;
+    }
+    header {
+      max-width: 840px;
+      margin: 32px auto 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .nav-home { color: var(--mut); text-decoration: none; font-size: 14px; }
+    .nav-home:hover { color: var(--acc); }
+    h1 { font-size: clamp(24px, 4vw, 36px); margin: 10px 0 6px; }
+    .sub { color: var(--mut); margin: 0; font-size: 15px; }
+    main { max-width: 840px; margin: 0 auto 60px; }
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 24px;
+      margin: 20px 0;
+      border: 1px solid var(--border);
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media(min-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: var(--fg); }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0e1428;
+      color: var(--fg);
+      font: 14px/1.5 ui-monospace, monospace;
+      resize: vertical;
+    }
+    textarea:focus { outline: 2px solid var(--acc); border-color: transparent; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 14px; }
+    button {
+      padding: 12px 22px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--acc);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: var(--acc-hover); }
+    button.ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--fg);
+    }
+    button.ghost:hover { background: var(--card-hover); }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 3px;
+    }
+    .badge.match { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge.missing { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge.verb { background: rgba(91, 140, 255, 0.15); color: #93b4ff; border: 1px solid rgba(91, 140, 255, 0.3); }
+    
+    .score-box {
+      text-align: center;
+      padding: 24px;
+      background: #0e1428;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .score-num { font-size: 48px; font-weight: 800; color: var(--acc); line-height: 1; }
+    .score-label { color: var(--mut); font-size: 14px; margin-top: 6px; }
+
+    .results-section { display: none; }
+    .results-section.active { display: block; }
+    
+    .promo-box {
+      background: linear-gradient(135deg, #182244, #121932);
+      border: 1px solid #3b4d82;
+      border-radius: 12px;
+      padding: 22px;
+      margin: 28px 0;
+    }
+    .promo-box h3 { margin: 0 0 8px; color: #fff; font-size: 18px; }
+    .promo-box p { color: var(--mut); margin: 0 0 16px; font-size: 14px; }
+    .btn-gumroad {
+      background: #ff90e8;
+      color: #0b1020;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .btn-gumroad:hover { background: #ff75e2; }
+
+    .guide { line-height: 1.7; color: var(--mut); font-size: 15px; }
+    .guide h2 { color: var(--fg); font-size: 20px; margin-top: 24px; }
+    .tools-list { display: flex; flex-direction: column; gap: 10px; list-style: none; padding: 0; }
+    .tools-list li a { color: var(--acc); text-decoration: none; font-weight: 600; }
+    .tools-list li a:hover { text-decoration: underline; }
+    .tools-list li span { color: var(--mut); font-size: 14px; }
+    footer {
+      color: var(--mut);
+      font-size: 13px;
+      margin-top: 48px;
+      border-top: 1px solid var(--border);
+      padding-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="nav-home" href="../../index.html">&larr; Back to Micro-Tools Portal</a>
+    <h1>ATS Resume Keyword Matcher</h1>
+    <p class="sub">100% Free • No Signup • Runs Privately in Your Browser</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="grid-2">
+        <div>
+          <label for="jobDesc">1. Paste Job Description</label>
+          <textarea id="jobDesc" placeholder="Paste the target job description here (requirements, tech stack, responsibilities)..."></textarea>
+        </div>
+        <div>
+          <label for="resumeText">2. Paste Your Resume Text</label>
+          <textarea id="resumeText" placeholder="Paste your resume or CV plain text here..."></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <button id="btnAnalyze">Analyze Match & Keywords</button>
+        <button class="ghost" id="btnLoadExample">Load Sample Data</button>
+        <button class="ghost" id="btnClear">Clear</button>
+      </div>
+    </div>
+
+    <div id="results" class="card results-section">
+      <div class="score-box">
+        <div id="scoreNum" class="score-num">0%</div>
+        <div id="scoreTitle" class="score-label">Estimated ATS Compatibility Score</div>
+      </div>
+
+      <h3>Matching Keywords Found (<span id="matchCount">0</span>)</h3>
+      <div id="matchContainer" style="margin-bottom: 20px;"></div>
+
+      <h3>Missing Keywords to Add (<span id="missingCount">0</span>)</h3>
+      <div id="missingContainer" style="margin-bottom: 20px;"></div>
+
+      <h3>Recommended Action Verbs</h3>
+      <div id="verbContainer" style="margin-bottom: 20px;"></div>
+
+      <div class="row">
+        <button id="btnCopyReport">Copy Full Match Report</button>
+      </div>
+    </div>
+
+    <!-- Monetization Block -->
+    <div class="promo-box">
+      <h3>🚀 Level Up Your Career & Personal Finances</h3>
+      <p>Landing the interview is just step one. Take total control of your budget and freelance income with our professional Pro toolkits:</p>
+      <div>
+        <a class="btn-gumroad" href="https://clearmindpress.gumroad.com/l/yzefvc" target="_blank">Get Subscription Killer & Budget ($9)</a>
+        <a class="btn-gumroad" href="https://clearmindpress.gumroad.com/l/rfgcba" target="_blank" style="background:#5b8cff; color:#fff;">Freelance Tax Tracker ($12)</a>
+      </div>
+      <p style="margin-top: 14px; font-size: 13px;">
+        <span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px;">Sponsored / Partner link</span> 
+        Need an ergonomic home office upgrade? Check out top-rated <a href="https://www.amazon.com/gp/product/B07BX5PGKT/ref=ox_sc_act_title_1?tag=absht00-20" target="_blank" style="color:#93b4ff;">Amazon Productivity Essentials & Tech Deals</a>.
+      </p>
+    </div>
+
+    <!-- SEO Practical Guide -->
+    <div class="card guide">
+      <h2>How to Optimize Your Resume for ATS (Applicant Tracking Systems)</h2>
+      <p>Applicant Tracking Systems (ATS) scan and parse incoming resumes before a human recruiter ever reads them. If your resume lacks essential hard skills and keywords specified in the job posting, automated filters may reject it instantly.</p>
+      <p>Our free ATS Resume Keyword Matcher runs entirely client-side in your web browser. No files are uploaded to external servers, ensuring absolute privacy for your personal career data. Simply paste the target job description and your resume text, click analyze, and instantly discover which critical skills you are missing.</p>
+      
+      <h2>Frequently Asked Questions</h2>
+      <p><strong>1. Why is keyword matching important?</strong><br>Recruiters often set automated filters requiring 70%+ keyword match on core competencies. Aligning your vocabulary with the job description ensures your resume ranks higher in recruiter searches.</p>
+      <p><strong>2. Should I keyword stuff my resume?</strong><br>Never stuff keywords blindly or in invisible white text. Instead, integrate missing technical terms naturally into your professional experience bullet points with quantified impact metrics.</p>
+
+      <h2>Related Free Micro-Tools</h2>
+      <ul class="tools-list" style="margin-top: 12px;">
+        <li><a href="../word-counter/index.html">Word and Character Counter</a> <span>- Count words, characters, and reading time instantly.</span></li>
+        <li><a href="../case-converter/index.html">Text Case Converter</a> <span>- Convert text between UPPER, lower, Title Case, and slug format.</span></li>
+        <li><a href="../remove-duplicates/index.html">Remove Duplicate Lines</a> <span>- Clean lists and duplicate lines instantly.</span></li>
+        <li><a href="../json-formatter/index.html">JSON Formatter and Validator</a> <span>- Pretty-print and validate JSON code offline.</span></li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Micro-Tools Studio • 100% Free Client-Side Utilities • Zero Signup Required</p>
+  </footer>
+
+  <script>
+    const sampleJob = `Senior Software Engineer / Full Stack Developer
+Requirements:
+- 5+ years of experience with JavaScript, TypeScript, Node.js, and React.
+- Experience building scalable cloud applications on AWS, Docker, and Kubernetes.
+- Strong knowledge of RESTful APIs, SQL, PostgreSQL, and Git workflows.
+- Excellent communication, agile methodologies, CI/CD pipelines, and unit testing (Jest).`;
+
+    const sampleResume = `John Doe - Full Stack Developer
+Summary:
+Experienced software developer with 4 years building web apps.
+Skills: JavaScript, HTML, CSS, React, Node.js, Python, Git.
+Experience:
+- Developed responsive web frontends using React and JavaScript.
+- Built backend API endpoints using Node.js and Express.
+- Worked with Git for version control and collaborated in Agile teams.`;
+
+    document.getElementById('btnLoadExample').addEventListener('click', () => {
+      document.getElementById('jobDesc').value = sampleJob;
+      document.getElementById('resumeText').value = sampleResume;
+    });
+
+    document.getElementById('btnClear').addEventListener('click', () => {
+      document.getElementById('jobDesc').value = '';
+      document.getElementById('resumeText').value = '';
+      document.getElementById('results').classList.remove('active');
+    });
+
+    const stopWords = new Set(['and','the','with','for','you','are','our','that','this','from','have','has','had','will','can','our','your','per','etc','all','any','not','but','was','were','they','their']);
+
+    function extractKeywords(text) {
+      if (!text) return [];
+      // Clean and tokenize
+      const cleaned = text.toLowerCase().replace(/[^a-z0-9#\+\-\.]/g, ' ');
+      const words = cleaned.split(/\s+/).filter(w => w.length > 2 && !stopWords.has(w));
+      return [...new Set(words)];
+    }
+
+    const commonActionVerbs = ['engineered','optimized','spearheaded','architected','deployed','automated','developed','implemented','designed','led','delivered','integrated'];
+
+    document.getElementById('btnAnalyze').addEventListener('click', () => {
+      const job = document.getElementById('jobDesc').value;
+      const resume = document.getElementById('resumeText').value;
+
+      if (!job.trim() || !resume.trim()) {
+        alert('Please paste both a job description and your resume text.');
+        return;
+      }
+
+      const jobKeywords = extractKeywords(job);
+      const resumeLower = resume.toLowerCase();
+
+      const matched = [];
+      const missing = [];
+
+      jobKeywords.forEach(kw => {
+        if (resumeLower.includes(kw)) {
+          matched.push(kw);
+        } else {
+          missing.push(kw);
+        }
+      });
+
+      const total = jobKeywords.length || 1;
+      const score = Math.round((matched.length / total) * 100);
+
+      document.getElementById('scoreNum').textContent = score + '%';
+      document.getElementById('matchCount').textContent = matched.length;
+      document.getElementById('missingCount').textContent = missing.length;
+
+      const matchContainer = document.getElementById('matchContainer');
+      matchContainer.innerHTML = matched.length ? matched.map(k => `<span class="badge match">${k}</span>`).join('') : '<span style="color:var(--mut);">None found</span>';
+
+      const missingContainer = document.getElementById('missingContainer');
+      missingContainer.innerHTML = missing.length ? missing.map(k => `<span class="badge missing">${k}</span>`).join('') : '<span style="color:var(--succ);">No missing keywords! Perfect match.</span>';
+
+      const verbsFound = commonActionVerbs.filter(v => resumeLower.includes(v));
+      const verbsMissing = commonActionVerbs.filter(v => !resumeLower.includes(v));
+      const verbContainer = document.getElementById('verbContainer');
+      verbContainer.innerHTML = verbsMissing.map(v => `<span class="badge verb">+ ${v}</span>`).join('') + (verbsMissing.length === 0 ? '<span style="color:var(--succ);">Great use of action verbs!</span>' : '');
+
+      document.getElementById('results').classList.add('active');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('btnCopyReport').addEventListener('click', () => {
+      const score = document.getElementById('scoreNum').textContent;
+      const matched = document.getElementById('matchCount').textContent;
+      const missing = document.getElementById('missingCount').textContent;
+      const report = `ATS Resume Keyword Match Report\\nScore: ${score}\\nMatched Keywords: ${matched}\\nMissing Keywords: ${missing}\\nGenerated by Micro-Tools Studio (100% Client-Side Privacy)`;
+      navigator.clipboard.writeText(report).then(() => {
+        alert('Report copied to clipboard!');
+      });
+    });
+  </script>
+</body>
+</html>
