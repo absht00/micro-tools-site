@@ -1,1 +1,148 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Free Online Tools</title><style>:root{--bg:#0b1020;--card:#151b30;--fg:#e8ecf8;--mut:#93a0c0;--acc:#5b8cff}*{box-sizing:border-box}body{margin:0;font:16px/1.6 system-ui,sans-serif;background:var(--bg);color:var(--fg)}main{max-width:760px;margin:0 auto;padding:32px 20px}h1{font-size:clamp(24px,5vw,38px);margin:0 0 8px}.sub{color:var(--mut);margin:0 0 28px}.card{background:var(--card);border-radius:14px;padding:22px;margin:18px 0}textarea{width:100%;padding:12px;border-radius:9px;border:1px solid #2a3350;background:#0e1428;color:var(--fg);font:inherit;font-family:ui-monospace,monospace}button{padding:11px 18px;border:0;border-radius:9px;background:var(--acc);color:#fff;font-weight:600;cursor:pointer;margin:8px 8px 0 0}button.ghost{background:transparent;border:1px solid #2a3350;color:var(--fg)}.row{display:flex;gap:10px;flex-wrap:wrap}footer{color:var(--mut);font-size:13px;margin-top:36px;border-top:1px solid #202940;padding-top:18px}a{color:var(--acc)}</style></head><body><main><h1>Free Online Tools</h1><p class="sub">Everything runs in your browser.</p><ul><li><a href="tools/word-counter/index.html">Word and Character Counter</a> - Count words, characters, sentences and reading time instantly.</li><li><a href="tools/case-converter/index.html">Text Case Converter</a> - Convert text to UPPER, lower, Title Case or slug-case.</li><li><a href="tools/json-formatter/index.html">JSON Formatter and Validator</a> - Pretty-print and validate JSON with the exact error position.</li><li><a href="tools/base64/index.html">Base64 Encoder and Decoder</a> - Encode or decode Base64 text instantly, offline.</li><li><a href="tools/remove-duplicates/index.html">Remove Duplicate Lines</a> - Delete duplicate lines from any list, keeping the order.</li></ul><p class="sub">Updated: 2026-11-21</p></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online Micro-Tools Studio • 100% Private & In-Browser</title>
+<meta name="description" content="Free instant online micro-tools for personal finance, career, file privacy, and daily productivity. 100% secure, zero signup, runs entirely in your browser.">
+<link rel="canonical" href="https://absht00.github.io/micro-tools-site/">
+<style>
+:root{--bg:#0b1020;--card:#151b30;--card-hover:#1c2442;--fg:#e8ecf8;--mut:#93a0c0;--acc:#5b8cff;--border:#2a3350}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.6 system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--fg);padding:20px}
+.container{max-width:1000px;margin:0 auto}
+header{text-align:center;padding:40px 20px;border-bottom:1px solid var(--border);margin-bottom:30px}
+h1{font-size:clamp(28px,5vw,42px);margin:0 0 10px;color:#fff}
+.sub{color:var(--mut);font-size:16px;max-width:600px;margin:0 auto}
+.search-box{margin-top:20px;max-width:500px;margin-left:auto;margin-right:auto}
+input[type="search"]{width:100%;padding:12px 18px;border-radius:10px;border:1px solid var(--border);background:#0e1428;color:var(--fg);font:inherit}
+input[type="search"]:focus{outline:none;border-color:var(--acc)}
+.section-title{font-size:20px;color:#fff;margin:30px 0 15px;border-bottom:1px solid var(--border);padding-bottom:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;transition:transform .2s, border-color .2s;text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between}
+.card:hover{transform:translateY(-3px);border-color:var(--acc);background:var(--card-hover)}
+.card h3{margin:0 0 8px;font-size:18px;color:#fff}
+.card p{margin:0 0 15px;color:var(--mut);font-size:14px;line-height:1.5}
+.tag{display:inline-block;background:rgba(91,140,255,0.15);color:var(--acc);padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;margin-bottom:8px}
+footer{text-align:center;margin-top:50px;padding:25px 0;border-top:1px solid var(--border);color:var(--mut);font-size:13px}
+a{color:var(--acc);text-decoration:none}
+a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Free Online Micro-Tools Studio</h1>
+    <p class="sub">Lightning-fast utility tools for finance, career, file privacy, and developer tasks. 100% free, zero signup, runs privately in your browser.</p>
+    <div class="search-box">
+      <input type="search" id="searchInput" placeholder="Search tools (e.g. debt, resume, subscription, exif)..." oninput="filterTools()">
+    </div>
+  </header>
+
+  <main id="toolsMain">
+    <div class="section-title">💰 Money & Financial Calculators</div>
+    <div class="grid" data-category="finance">
+      <a href="tools/debt-snowball-avalanche-calculator/index.html" class="card">
+        <div>
+          <span class="tag">Finance</span>
+          <h3>Debt Snowball vs Avalanche Calculator</h3>
+          <p>Compare debt payoff strategies side-by-side, calculate total interest saved, and view monthly schedules.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+      <a href="tools/subscription-cost-calculator/index.html" class="card">
+        <div>
+          <span class="tag">Finance</span>
+          <h3>Subscription Cost Calculator</h3>
+          <p>Calculate your true monthly and annual subscription expenses and identify waste.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+    </div>
+
+    <div class="section-title">💼 Career & Freelance</div>
+    <div class="grid" data-category="career">
+      <a href="tools/ats-resume-matcher/index.html" class="card">
+        <div>
+          <span class="tag">Career</span>
+          <h3>ATS Resume Keyword Matcher</h3>
+          <p>Match your resume against job descriptions to score keyword fit and beat Applicant Tracking Systems.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+    </div>
+
+    <div class="section-title">🔒 Privacy & File Utilities</div>
+    <div class="grid" data-category="privacy">
+      <a href="tools/exif-remover/index.html" class="card">
+        <div>
+          <span class="tag">Privacy</span>
+          <h3>EXIF & GPS Photo Remover</h3>
+          <p>Strip private EXIF metadata and GPS location tags from your photos instantly in-browser.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+    </div>
+
+    <div class="section-title">⚡ Everyday & Developer Productivity</div>
+    <div class="grid" data-category="utility">
+      <a href="tools/word-counter/index.html" class="card">
+        <div>
+          <span class="tag">Utility</span>
+          <h3>Word & Character Counter</h3>
+          <p>Count words, characters, sentences, paragraphs, and reading time instantly.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+      <a href="tools/case-converter/index.html" class="card">
+        <div>
+          <span class="tag">Utility</span>
+          <h3>Text Case Converter</h3>
+          <p>Convert text to UPPER, lower, Title Case, camelCase, or slug-case instantly.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+      <a href="tools/json-formatter/index.html" class="card">
+        <div>
+          <span class="tag">Developer</span>
+          <h3>JSON Formatter & Validator</h3>
+          <p>Pretty-print, minify, and validate JSON data with exact line error reporting.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+      <a href="tools/base64/index.html" class="card">
+        <div>
+          <span class="tag">Developer</span>
+          <h3>Base64 Encoder & Decoder</h3>
+          <p>Encode or decode text and strings in Base64 securely offline.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+      <a href="tools/remove-duplicates/index.html" class="card">
+        <div>
+          <span class="tag">Utility</span>
+          <h3>Remove Duplicate Lines</h3>
+          <p>Clean up text lists by instantly removing duplicate lines while preserving order.</p>
+        </div>
+        <span>Use Tool →</span>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Free Micro-Tools Studio. 100% Client-Side Privacy. Built for everyday utility.</p>
+  </footer>
+</div>
+
+<script>
+function filterTools() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(query) ? 'flex' : 'none';
+  });
+}
+</script>
+</body>
+</html>
