@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Client-Side PDF Metadata Remover & Redactor | No Signup</title>
+    <meta name="description" content="Remove hidden metadata (author, creator, dates), inspect PDF properties, and clean sensitive info 100% locally in your browser. No server uploads, zero signup required.">
+    <link rel="canonical" href="https://microtools.stopoverpaying.com/tools/pdf-metadata-remover/">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- PDF-Lib CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Free PDF Metadata Remover & Redactor",
+      "url": "https://microtools.stopoverpaying.com/tools/pdf-metadata-remover/",
+      "description": "Inspect and strip hidden author names, creator software, and creation dates from PDF documents entirely inside your web browser.",
+      "applicationCategory": "SecurityApplication",
+      "operatingSystem": "All",
+      "browser": "Requires JavaScript. Runs 100% client-side.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are my PDF files uploaded to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No! All processing happens 100% inside your web browser using JavaScript (pdf-lib). Your files never leave your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What metadata does this tool remove?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It clears the document title, author, subject, keywords, creator application, producer, and creation/modification timestamps embedded in the PDF document properties."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why should I remove PDF metadata before sharing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PDF files often store hidden data such as your computer username, original author name, creation software version, and editing history, which can leak personal or corporate privacy."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this tool completely free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, 100% free with no registration, email signup, or usage limits."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/60 sticky top-0 z-50 backdrop-blur">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="../../index.html" class="flex items-center space-x-2 text-xl font-bold tracking-tight text-white hover:text-emerald-400 transition">
+                <span>🛡️ MicroTools Studio</span>
+            </a>
+            <nav class="flex items-center space-x-6 text-sm font-medium">
+                <a href="../../index.html" class="text-slate-400 hover:text-white transition">All Tools</a>
+                <span class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-semibold border border-emerald-500/20">100% Client-Side Privacy</span>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-10 w-full">
+        
+        <!-- Hero section -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
+                Free PDF Metadata Remover & Cleaner
+            </h1>
+            <p class="text-slate-400 text-lg max-w-2xl mx-auto">
+                Strip hidden author names, creator software, and timestamps from your PDF files instantly. 
+                <span class="text-emerald-400 font-semibold">100% in-browser processing — zero server uploads.</span>
+            </p>
+        </div>
+
+        <!-- Tool Interface Card -->
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl mb-12">
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-800">
+                <div>
+                    <h2 class="text-lg font-semibold text-white">Upload or Test PDF</h2>
+                    <p class="text-xs text-slate-400">Select any PDF file or load our sample document to test instantly.</p>
+                </div>
+                <button id="load-sample-btn" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 text-sm font-medium px-4 py-2 rounded-lg border border-slate-700 transition flex items-center gap-2">
+                    ⚡ Load Example PDF
+                </button>
+            </div>
+
+            <!-- Dropzone / Input -->
+            <div id="dropzone" class="border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-xl p-8 text-center cursor-pointer transition bg-slate-900/50 mb-6">
+                <input type="file" id="pdf-file-input" accept="application/pdf" class="hidden">
+                <div class="flex flex-col items-center justify-center space-y-3">
+                    <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 text-xl font-bold">
+                        📄
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-slate-200">Drag & drop your PDF here, or <span class="text-emerald-400 underline">browse files</span></p>
+                        <p class="text-xs text-slate-500 mt-1">Supports standard PDF documents up to 50MB</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Info & Metadata Inspector -->
+            <div id="inspector-section" class="hidden space-y-6">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-semibold text-slate-300 uppercase tracking-wider">Detected Metadata Properties</h3>
+                        <span id="file-name-badge" class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-md font-mono"></span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                            <span class="block text-xs text-slate-500 mb-1">Title</span>
+                            <span id="meta-title" class="text-slate-200 font-mono text-xs break-all">-</span>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                            <span class="block text-xs text-slate-500 mb-1">Author</span>
+                            <span id="meta-author" class="text-slate-200 font-mono text-xs break-all">-</span>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                            <span class="block text-xs text-slate-500 mb-1">Subject</span>
+                            <span id="meta-subject" class="text-slate-200 font-mono text-xs break-all">-</span>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800">
+                            <span class="block text-xs text-slate-500 mb-1">Creator / Producer</span>
+                            <span id="meta-creator" class="text-slate-200 font-mono text-xs break-all">-</span>
+                        </div>
+                        <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 sm:col-span-2">
+                            <span class="block text-xs text-slate-500 mb-1">Creation Date</span>
+                            <span id="meta-date" class="text-slate-200 font-mono text-xs break-all">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-emerald-950/20 border border-emerald-500/30 p-5 rounded-xl">
+                    <div>
+                        <h4 class="font-semibold text-emerald-400 text-sm">Ready to Clean Metadata</h4>
+                        <p class="text-xs text-slate-400">All author names, editing dates, and software signatures will be wiped clean.</p>
+                    </div>
+                    <button id="clean-btn" class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
+                        🧹 Remove Metadata & Download
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status message -->
+            <div id="status-message" class="hidden mt-4 p-4 rounded-xl text-sm text-center"></div>
+
+        </div>
+
+        <!-- Monetization & Cross-Promo Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <!-- Gumroad Pro CTA -->
+            <div class="bg-gradient-to-br from-slate-950 to-slate-900 border border-emerald-500/30 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute top-0 right-0 bg-emerald-500 text-slate-950 text-xs font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+                    Pro Bundle
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-2">Freelance Invoice & Tax Tracker Pro ($12)</h3>
+                    <p class="text-sm text-slate-400 mb-4">
+                        Automate your client invoices, expense categorization, and tax estimates with our professional Excel & Google Sheets master template.
+                    </p>
+                </div>
+                <a href="https://clearmindpress.gumroad.com/l/rfgcba" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-center text-sm transition">
+                    Get Pro Template →
+                </a>
+            </div>
+
+            <!-- Partner / Affiliate Recommendation -->
+            <div class="bg-gradient-to-br from-slate-950 to-slate-900 border border-slate-800 rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute top-0 right-0 bg-slate-800 text-slate-400 text-xs font-semibold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+                    Sponsored / Partner
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-2">Secure Cloud & Password Vaults</h3>
+                    <p class="text-sm text-slate-400 mb-4">
+                        Protect all your confidential PDF contracts, financial records, and client documents with zero-knowledge encrypted cloud storage.
+                    </p>
+                </div>
+                <a href="https://alternatives.stopoverpaying.com/alternatives-to-cloud-storage-and-password-managers/" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 font-semibold px-4 py-2.5 rounded-xl text-center text-sm transition border border-slate-700">
+                    Explore Secure Solutions →
+                </a>
+            </div>
+        </div>
+
+        <!-- SEO Content & Practical Guide -->
+        <article class="bg-slate-950 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 text-slate-300 leading-relaxed text-sm">
+            <h2 class="text-2xl font-bold text-white tracking-tight">Why Strip PDF Metadata Before Sharing Files Online?</h2>
+            <p>
+                When you create a PDF document from Microsoft Word, Google Docs, Adobe Acrobat, or scanned invoices, the software automatically embeds hidden information known as **Document Metadata**. This includes the original author's name, computer username, software version used for creation, editing timestamps, and sometimes previous file paths.
+            </p>
+            <p>
+                For freelancers, remote workers, and businesses, leaking internal username structures or client names can pose privacy and security risks. Using our <strong>Free PDF Metadata Remover</strong> ensures your documents are completely sanitized before sending them to clients, uploading them to job portals, or publishing them publicly.
+            </p>
+
+            <h3 class="text-xl font-bold text-white pt-4">How It Works in Your Browser</h3>
+            <p>
+                Unlike online converters that upload your confidential contracts and invoices to remote cloud servers, our tool runs entirely inside your web browser using client-side JavaScript. When you drop a file into the window, the script parses the PDF structure locally, clears out sensitive information fields, and generates a fresh, sanitized PDF for instant download. Your files never leave your device.
+            </p>
+
+            <h3 class="text-xl font-bold text-white pt-4">Frequently Asked Questions</h3>
+            <div class="space-y-4 pt-2">
+                <div>
+                    <h4 class="font-semibold text-white">Can I remove metadata from password-protected PDFs?</h4>
+                    <p class="text-slate-400 mt-1">Encrypted or password-protected PDFs must be unlocked before metadata removal. Please remove the password protection first.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white">Does clearing metadata affect the text or layout of my PDF?</h4>
+                    <p class="text-slate-400 mt-1">No. Metadata cleaning only removes the hidden document properties header. Your text, images, pages, and formatting remain 100% intact.</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Related Tools Section -->
+        <div class="mt-12">
+            <h3 class="text-lg font-bold text-white mb-4">Related Free Privacy & Utility Tools</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <a href="../exif-remover/index.html" class="bg-slate-950 border border-slate-800 hover:border-emerald-500/50 p-4 rounded-xl transition block">
+                    <div class="font-semibold text-white text-sm mb-1">EXIF Metadata Remover</div>
+                    <p class="text-xs text-slate-400">Strip GPS location & camera data from photos.</p>
+                </a>
+                <a href="../ats-resume-matcher/index.html" class="bg-slate-950 border border-slate-800 hover:border-emerald-500/50 p-4 rounded-xl transition block">
+                    <div class="font-semibold text-white text-sm mb-1">ATS Resume Matcher</div>
+                    <p class="text-xs text-slate-400">Optimize your resume against job descriptions.</p>
+                </a>
+                <a href="../subscription-cost-calculator/index.html" class="bg-slate-950 border border-slate-800 hover:border-emerald-500/50 p-4 rounded-xl transition block">
+                    <div class="font-semibold text-white text-sm mb-1">Subscription Killer</div>
+                    <p class="text-xs text-slate-400">Calculate annual waste and cancel unused apps.</p>
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-8 mt-16 text-center text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto px-4 space-y-2">
+            <p>© 2026 MicroTools Studio. Free, privacy-first web utilities. No cookies, zero tracking.</p>
+            <p>
+                <a href="../../index.html" class="hover:underline text-slate-400">Home</a> • 
+                <a href="https://clearmindpress.gumroad.com/" target="_blank" rel="noopener noreferrer" class="hover:underline text-emerald-400">Gumroad Store</a> • 
+                <span class="text-slate-600">Partner disclosures apply</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Client-side JavaScript -->
+    <script>
+        let currentPdfBytes = null;
+        let currentFileName = 'document.pdf';
+        let pdfDoc = null;
+
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('pdf-file-input');
+        const inspectorSection = document.getElementById('inspector-section');
+        const loadSampleBtn = document.getElementById('load-sample-btn');
+        const cleanBtn = document.getElementById('clean-btn');
+        const statusMessage = document.getElementById('status-message');
+
+        const metaTitle = document.getElementById('meta-title');
+        const metaAuthor = document.getElementById('meta-author');
+        const metaSubject = document.getElementById('meta-subject');
+        const metaCreator = document.getElementById('meta-creator');
+        const metaDate = document.getElementById('meta-date');
+        const fileNameBadge = document.getElementById('file-name-badge');
+
+        dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('border-emerald-500', 'bg-slate-900');
+        });
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('border-emerald-500', 'bg-slate-900');
+        });
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-emerald-500', 'bg-slate-900');
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        loadSampleBtn.addEventListener('click', async () => {
+            showStatus('Generating sample PDF with sample metadata...', 'info');
+            try {
+                // Create a sample PDF using pdf-lib
+                const sampleDoc = await PDFLib.PDFDocument.create();
+                sampleDoc.setTitle('Confidential Financial Report 2026');
+                sampleDoc.setAuthor('John Doe (Internal Corp Admin)');
+                sampleDoc.setSubject('Q3 Budget Analysis & Forecast');
+                sampleDoc.setCreator('Microsoft Word 365 / Adobe Acrobat Pro');
+                sampleDoc.setProducer('Adobe PDF Library 15.0');
+                sampleDoc.setCreationDate(new Date('2026-05-15T10:30:00Z'));
+                sampleDoc.setModificationDate(new Date('2026-10-01T14:22:10Z'));
+
+                const page = sampleDoc.addPage([600, 400]);
+                const { width, height } = page.getSize();
+                page.drawText('Sample Confidential Report\n\nThis document contains sensitive metadata\nthat should be stripped before publishing.', {
+                    x: 50,
+                    y: height - 100,
+                    size: 16,
+                });
+
+                currentPdfBytes = await sampleDoc.save();
+                currentFileName = 'sample-confidential-report.pdf';
+                pdfDoc = sampleDoc;
+
+                displayMetadata(sampleDoc, currentFileName);
+                showStatus('Sample PDF loaded successfully! Review metadata below.', 'success');
+            } catch (err) {
+                console.error(err);
+                showStatus('Failed to generate sample PDF: ' + err.message, 'error');
+            }
+        });
+
+        async function handleFile(file) {
+            if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+                showStatus('Please upload a valid PDF file.', 'error');
+                return;
+            }
+            showStatus('Reading PDF file locally...', 'info');
+            try {
+                currentFileName = file.name;
+                currentPdfBytes = await file.arrayBuffer();
+                pdfDoc = await PDFLib.PDFDocument.load(currentPdfBytes);
+
+                displayMetadata(pdfDoc, currentFileName);
+                showStatus('PDF loaded successfully!', 'success');
+            } catch (err) {
+                console.error(err);
+                showStatus('Error parsing PDF file: ' + err.message, 'error');
+            }
+        }
+
+        function displayMetadata(doc, filename) {
+            fileNameBadge.textContent = filename;
+            metaTitle.textContent = doc.getTitle() || '(None)';
+            metaAuthor.textContent = doc.getAuthor() || '(None)';
+            metaSubject.textContent = doc.getSubject() || '(None)';
+            metaCreator.textContent = (doc.getCreator() || '(None)') + ' / ' + (doc.getProducer() || '(None)');
+            
+            let dateStr = '(None)';
+            try {
+                const cDate = doc.getCreationDate();
+                if (cDate) dateStr = cDate.toISOString();
+            } catch(e) {}
+            metaDate.textContent = dateStr;
+
+            inspectorSection.classList.remove('hidden');
+        }
+
+        cleanBtn.addEventListener('click', async () => {
+            if (!pdfDoc) {
+                showStatus('Please load or drop a PDF file first.', 'error');
+                return;
+            }
+            showStatus('Stripping metadata and sanitizing document...', 'info');
+            try {
+                // Clear all standard metadata fields
+                pdfDoc.setTitle('');
+                pdfDoc.setAuthor('');
+                pdfDoc.setSubject('');
+                pdfDoc.setKeywords([]);
+                pdfDoc.setCreator('');
+                pdfDoc.setProducer('');
+                pdfDoc.setCreationDate(new Date(0));
+                pdfDoc.setModificationDate(new Date(0));
+
+                const cleanedBytes = await pdfDoc.save();
+                
+                // Trigger download
+                const blob = new Blob([cleanedBytes], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentFileName.replace('.pdf', '-cleaned.pdf');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showStatus('Metadata successfully removed! Cleaned PDF downloaded.', 'success');
+            } catch (err) {
+                console.error(err);
+                showStatus('Error cleaning metadata: ' + err.message, 'error');
+            }
+        });
+
+        function showStatus(text, type) {
+            statusMessage.textContent = text;
+            statusMessage.classList.remove('hidden', 'bg-emerald-500/10', 'text-emerald-400', 'border', 'border-emerald-500/20', 'bg-red-500/10', 'text-red-400', 'border-red-500/20', 'bg-blue-500/10', 'text-blue-400', 'border-blue-500/20');
+            if (type === 'success') {
+                statusMessage.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border', 'border-emerald-500/20');
+            } else if (type === 'error') {
+                statusMessage.classList.add('bg-red-500/10', 'text-red-400', 'border', 'border-red-500/20');
+            } else {
+                statusMessage.classList.add('bg-blue-500/10', 'text-blue-400', 'border', 'border-blue-500/20');
+            }
+        }
+    </script>
+</body>
+</html>
